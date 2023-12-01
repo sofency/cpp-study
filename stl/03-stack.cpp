@@ -1,6 +1,6 @@
-#include<iostream>
-#include<stack> //栈 先进后出
-#include<queue> //队列 先进先出
+#include <iostream>
+#include <stack> //栈 先进后出
+#include <queue> //队列 先进先出
 using namespace std;
 
 int main(int argc, char const *argv[])
