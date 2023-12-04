@@ -51,6 +51,10 @@ int main(int argc, char const *argv[])
   // [](){cout << num << endl;}(); error []表示不捕获外部任何变量
   cout << num << endl;
 
+  cout << "==========" << endl;
+  function<void(int)> func = bind([=](int val){ cout << num  << "," << val << endl;}, placeholders::_1);
+  func(21);
+  cout << "==========" << endl;
   Test test;
   test.output(1,2);
   return 0;
