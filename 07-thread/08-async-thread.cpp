@@ -93,6 +93,7 @@ void async_no_thread()
     this_thread::sleep_for(chrono::seconds(3));
     return x + 100;
   }, 100);
+  
   this_thread::sleep_for(chrono::seconds(5));
   cout << "数据为:" << f.get() << endl;
 }
