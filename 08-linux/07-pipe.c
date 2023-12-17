@@ -146,6 +146,15 @@ void pipe_multi_write_and_one_read()
     int lenghth;
     sleep(3);
     char buf2[64];
+    // 读管道
+    // 管道中有数据 read返回的实际读到的字节数
+    // 管道中无数据 写端全关闭，read返回0
+    //            仍有写端打开，阻塞等待
+    // 写管道
+    // 读端全关闭 进程异常终止
+    // 有读端打开 管道未满 写数据返回写入的字节数
+    //          管道已满 阻塞
+
     while((lenghth = read(fd[0], buf2, 64)) > 0) {
       write(STDOUT_FILENO, buf2, lenghth);
     }
