@@ -239,6 +239,12 @@ int sig_child()
 {
   int i;
   pid_t pid;
+  // 为了方式父进程还未注册成功，子进程就结束 因此需要阻塞
+  sigset_t set;
+  sigemptyset(&set);
+  sigaddset(&set, SIGCHLD);
+  sigprocmask(SIG_BLOCK, &set, NULL);
+
   for (i = 0; i < 5; i++)
   {
     if ((pid = fork()) == 0)
@@ -254,8 +260,11 @@ int sig_child()
     act.sa_flags = 0;
 
     sigaction(SIGCHLD, &act, NULL);
+    // 解除阻塞
+    sigprocmask(SIG_UNBLOCK, &set, NULL);
+
     printf("parent read to collect resource ...\n");
-    sleep(10);
+    sleep(10); // 模拟父进程的其他任务
   }
   else
   {
