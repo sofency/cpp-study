@@ -35,22 +35,17 @@ int &test()
 void showValue(const int &val)
 {
   // 传入引用 引用修改
-  // val = 100;
+  // val = 100; 外面的值就要改变
   cout << "inner:" << val << endl;
 }
 
-int main(int argc, char const *argv[])
+// 测试删除数据情况
+void test_delete()
 {
-  // 静态变量 和全局变量存储的位置很近 都是放在全局区
-  static int var = 9;
-  int *p = func();
-  cout << *p << endl; // 第一次可以打印正确的数字，是因为编译器做了保留
-  cout << *p << endl; // 第二次这个数据就不再保留了
-
   // 这样可以
   int *q = funct();
   cout << *q << endl; // 第一次可以打印正确的数字，是因为编译器做了保留
-  cout << *q << endl; // 第二次这个数据就不再保留了
+  cout << *q << endl; // 第二次这个数据依旧可以访问 这时的数据由程序员管理
   // 释放
   delete q;
 
@@ -62,6 +57,15 @@ int main(int argc, char const *argv[])
   }
   // 数组数据的释放
   delete[] arr;
+}
+
+int main(int argc, char const *argv[])
+{
+  // 静态变量 和全局变量存储的位置很近 都是放在全局区
+  static int var = 9;
+  int *p = func();
+  cout << *p << endl; // 第一次可以打印正确的数字，是因为编译器做了保留
+  cout << *p << endl; // 第二次这个数据就不再保留了
 
   // 引用
   // 语法 int a = 10; int &b = a;
