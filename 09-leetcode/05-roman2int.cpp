@@ -9,6 +9,7 @@
  *
  */
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <vector>
 using namespace std;
@@ -139,8 +140,8 @@ class Solution {
                                      {"V", 5},    {"IV", 4},   {"I", 1}};
 
         string result = "";
-        for (int i = 0; i < size(array); i++) {
-            while (num > array[i].second) {
+        for (int i = 0; i < sizeof(array) / sizeof(array[0]); i++) {
+            while (num >= array[i].second) {
                 result.append(array[i].first);
                 num -= array[i].second;
             }
@@ -153,7 +154,7 @@ class Solution {
 };
 
 int main(int argc, char const* argv[]) {
-    Solution solution;
-    cout << solution.intToRoman_simple(1994) << endl;
+    Solution soultion;
+    cout << soultion.intToRoman_simple(1994) << endl;
     return 0;
 }
