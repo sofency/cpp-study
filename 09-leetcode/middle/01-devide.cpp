@@ -15,7 +15,7 @@ using namespace std;
 class Solution {
  public:
   /**
-   * @brief 组合总和 39
+   * @brief 组合总和 39 40
    *
    * @param candidates
    * @param target
@@ -39,11 +39,32 @@ class Solution {
       return;
     }
     for (int i = id; i < candidates.size(); i++) {
+      // 过滤掉重复元素
+      if (i > id && candidates[i] == candidates[i - 1]) {
+        continue;
+      }
       temp.push_back(candidates[i]);
-      // 这里使用i 表示可以重复使用当前元素
-      backtrack(result, temp, candidates, target - candidates[i], i);
+      backtrack(result, temp, candidates, target - candidates[i], i + 1);
       temp.pop_back();
     }
+  }
+
+  /**
+   * @brief 用于判断temp是否为二维数组中的元素
+   *
+   * @param result
+   * @param temp
+   * @return true
+   * @return false
+   */
+  bool validate(vector<vector<int>>& result, vector<int> temp) {
+    for (auto start = result.begin(); start != result.end(); start++) {
+      vector<int> current = *start;
+      if (current == temp) {
+        return false;
+      }
+    }
+    return true;
   }
   /**
    * @brief leetcode 77组合
@@ -109,17 +130,17 @@ class Solution {
 
 int main(int argc, char const* argv[]) {
   Solution solution;
-  // vector<int> candidates = {2, 3, 6, 7};
-  // auto result = solution.combinationSum(candidates, 7);
-  auto result = solution.combine(4, 2);
+  vector<int> candidates = {10, 1, 2, 7, 6, 1, 5};
+  auto result = solution.combinationSum(candidates, 8);
+  // auto result = solution.combine(4, 2);
   for_each(result.begin(), result.end(), [](vector<int> single) {
     for_each(single.begin(), single.end(), [](int val) { cout << val << " "; });
     cout << endl;
   });
   cout << endl;
 
-  auto letters = solution.letterCombinations("23");
-  for_each(letters.begin(), letters.end(), [](string str) { cout << str << " "; });
-  cout << endl;
+  // auto letters = solution.letterCombinations("23");
+  // for_each(letters.begin(), letters.end(), [](string str) { cout << str << " "; });
+  // cout << endl;
   return 0;
 }

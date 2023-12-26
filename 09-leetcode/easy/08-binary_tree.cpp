@@ -99,4 +99,50 @@ class Solution {
     }
     return max(maxDepth(root->left) + 1, maxDepth(root->right) + 1);
   }
+
+  /**
+   * @brief 有序数组转换为二叉搜索树
+   *
+   * @param nums
+   * @return TreeNode*
+   */
+  TreeNode* sortedArrayToBST(vector<int>& nums) { return buildNode(nums, 0, nums.size() - 1); }
+  TreeNode* buildNode(vector<int>& nums, int left, int right) {
+    if (left > right) {
+      return nullptr;
+    }
+    int middle = (left + right) / 2;
+    TreeNode* root = new TreeNode();
+    root->val = nums[middle];
+    root->left = buildNode(nums, left, middle - 1);
+    root->right = buildNode(nums, middle + 1, right);
+    return root;
+  }
+
+  /**
+   * @brief 是否为平衡二叉树
+   *
+   * @param root
+   * @return true
+   * @return false
+   */
+  bool isBalanced(TreeNode* root) {
+    if (root == nullptr) {
+      return true;
+    }
+    // 计算每个节点的高度
+    if (abs(depth(root->left) - depth(root->right)) > 1) {
+      return false;
+    }
+    return isBalanced(root->left) && isBalanced(root->right);
+  }
+
+  int depth(TreeNode* root) {
+    if (root == nullptr) {
+      return 0;
+    }
+    int left = depth(root->left);
+    int right = depth(root->right);
+    return max(left, right) + 1;
+  }
 };
