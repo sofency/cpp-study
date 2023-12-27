@@ -13,6 +13,7 @@
  *
  */
 #include <iostream>
+#include <queue>
 using namespace std;
 
 struct TreeNode {
@@ -145,4 +146,45 @@ class Solution {
     int right = depth(root->right);
     return max(left, right) + 1;
   }
+
+  /**
+   * @brief 二叉树最小深度
+   * 利用队列使用广度优先遍历 进行查询 如果队列中第一个出现左右孩子都为nullptr 则返回对应的深度
+   * @param root
+   * @return int
+   */
+  int minDepth(TreeNode* root) {
+    if (root == nullptr) {
+      return 0;
+    } else {
+      queue<TreeNode> list;
+      list.push(*root);
+      int depth = 1;
+
+      while (!list.empty()) {
+        // 全部弹出 并添加下一层节点信息
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          TreeNode node = list.front();
+          if (node.left == nullptr && node.right == nullptr) {
+            return depth;
+          } else {
+            if (node.left != nullptr) {
+              list.push(*(node.left));
+            }
+            if (node.right != nullptr) {
+              list.push(*(node.right));
+            }
+          }
+          list.pop();
+        }
+        depth++;
+      }
+      return depth;
+    }
+  }
 };
+
+int main(int argc, char const* argv[]) {
+  return 0;
+}
