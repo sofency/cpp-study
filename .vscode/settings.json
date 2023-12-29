@@ -83,7 +83,8 @@
     "condition_variable": "cpp",
     "memory_resource": "cpp",
     "future": "cpp",
-    "time.h": "c"
+    "time.h": "c",
+    "version": "cpp"
   },
   // 这样配置是关键 使用到c++11的语法 -fno-elide-constructors 加上这个关闭RVC优化
   "code-runner.executorMap": {

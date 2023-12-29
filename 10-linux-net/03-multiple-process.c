@@ -4,6 +4,7 @@
  * @brief 多进程服务器-服务端代码
  * @version 0.1
  * @date 2023-12-27
+ * shutdown 在关闭多个文件描述符引用的文件时，采用全关闭方法。close是关闭一个
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -47,8 +48,9 @@ int main(int argc, char const *argv[])
   action.sa_flags = 0;
   sigaction(SIGCHLD, &action, NULL);
 
+  /*允许本地地址复用，即进程结束后不用等待2MSL*/
   int opt = 1;
-  setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+  setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, (void*)&opt, sizeof(opt));
 
   struct sockaddr_in sock, client;
   bzero(&sock, sizeof(sock));
