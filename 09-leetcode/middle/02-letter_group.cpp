@@ -34,18 +34,50 @@ class Solution {
     }
     return list;
   }
+  /**
+   * @brief 438. 找到字符串中所有字母异位词
+   *  TODO
+   * @param s
+   * @param p
+   * @return vector<int>
+   */
+  vector<int> findAnagrams(string s, string p) {
+    if (p.size() > s.size())
+      return {};
+    map<char, int> hashmap;
+    for (auto begin = p.begin(); begin < p.end(); begin++) {
+      hashmap[*begin] = hashmap[*begin] + 1;
+    }
+    int left = 0, right = 0, count = p.size();
+    vector<int> result;
+    while (right < s.size()) {
+      if (hashmap[s[right]] > 0) {
+        count--;
+      }
+      hashmap[s[right]]--;
+      right++;
+
+      if (count == 0) {
+        result.push_back(left);
+      }
+
+      if (right - left == p.size()) {
+        if (hashmap[s[left]] >= 0) {
+          count++;
+        }
+        hashmap[s[left]]++;
+        left++;
+      }
+    }
+    return result;
+  }
 };
 
 int main(int argc, char const* argv[]) {
   Solution solution;
-  vector<string> arg = {"a"};
-  auto result = solution.groupAnagrams(arg);
-  for (auto begin : result) {
-    for (auto first : begin) {
-      cout << first << " ";
-    }
-    cout << endl;
-  }
+  auto result = solution.findAnagrams("cbaebabacd", "abc");
+  for_each(result.begin(), result.end(), [](int val) { cout << val << " "; });
   cout << endl;
+
   return 0;
 }

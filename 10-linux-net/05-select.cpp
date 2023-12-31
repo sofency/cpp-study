@@ -99,6 +99,12 @@ int main(int argc, char const* argv[]) {
     for (i = 0; i < actions.length; i++) {
       int actionfd = actions.action[i];
       if (FD_ISSET(actionfd, &rset)) {  // 找到满足读事件的fd
+        // read 返回值含义:
+        //      >0 读取到的字节数
+        //      =0 socket中表示对端关闭
+        //      -1:  如果errno=EINTR 被异常中断
+        //           errno==EAGIN 或者 EWOULDBLOCK 以非阻塞方法啊读数据 但是没数据，需要再次读
+        //           errno==ECONNREST 说明连接被重置
         length = read(actionfd, buf, sizeof(buf));
         if (length == 0) {
           close(actionfd);
