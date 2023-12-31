@@ -14,7 +14,7 @@
  * 也可以修改上限
  * sudo  vim /etc/secutiry/limits.conf
  *        soft nofile  size
- *        hard nofile   size
+ *        hard nofile  20000 
  * 
  */
 
@@ -49,21 +49,30 @@ int main(int argc, char *argv[])
     Bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
     Listen(listenfd, 20);
 
-    efd = epoll_create(OPEN_MAX);               //创建epoll模型, efd指向红黑树根节点
+    // 创建OPEN_MAX表示创建的红黑树监听节点数量 仅供内核参考 可以扩容
+    // 返回值 指向新创建的红黑树的节点 fd
+    efd = epoll_create(OPEN_MAX);           
     if (efd == -1)
         perr_exit("epoll_create error");
 
     struct epoll_event tep, ep[OPEN_MAX];       //tep: epoll_ctl参数  ep[] : epoll_wait参数
 
+    // 事件 EPOLLIN EPOLLOUT EPOLLERR
     tep.events = EPOLLIN; 
     tep.data.fd = listenfd;           //指定lfd的监听时间为"读"
 
+    // 第二个参数 op即 对该监听红黑树所做的操作
+    //               EPOLL_CTL_ADD 添加fd到监听红黑树
+    //               EPOLL_CTL_MOD 修改fd在监听红黑树上的监听事件。
+    //               EPOLL_CTL_DEL 将一个fd从监听红黑树上摘下
+    // 第三个参数 待监听的fd
+    // 第四个参数 
     res = epoll_ctl(efd, EPOLL_CTL_ADD, listenfd, &tep);    //将lfd及对应的结构体设置到树上,efd可找到该树
     if (res == -1)
         perr_exit("epoll_ctl error");
 
     for ( ; ; ) {
-        /*epoll为server阻塞监听事件, ep为struct epoll_event类型数组, OPEN_MAX为数组容量, -1表永久阻塞*/
+        // epoll为server阻塞监听事件, ep为struct epoll_event类型数组, OPEN_MAX为数组容量, -1表永久阻塞
         // 返回的是有事件响应的个数，并且ep的前nready被设置为对应的fd信息
         nready = epoll_wait(efd, ep, OPEN_MAX, -1); 
         if (nready == -1)
