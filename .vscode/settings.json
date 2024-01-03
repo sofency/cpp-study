@@ -93,5 +93,6 @@
   "editor.defaultFormatter": "xaver.clang-format",
   "C_Cpp.formatting": "clangFormat",
   "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Chromium, IndentWidth: 2, ColumnLimit: 120}",
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+  "C_Cpp.errorSquiggles": "disabled"
 }

@@ -25,7 +25,7 @@ class Task {
 template <class T>
 class TaskQueue {
  public:
-  TaskQueue();
+  TaskQueue(int queue_size);
   ~TaskQueue();
   void addTask(const Task<T>& task);
   Task<T> takeTask();
