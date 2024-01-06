@@ -68,7 +68,7 @@ ssize_t Read(int fd, void *ptr, size_t nbytes)
 
 again:
 	if ( (n = read(fd, ptr, nbytes)) == -1) {
-		if (errno == EINTR)
+		if (errno == EINTR) // 信号中断
 			goto again;
 		else
 			return -1;

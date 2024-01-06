@@ -9,6 +9,7 @@
  *
  */
 #include <iostream>
+#include <stack>
 using namespace std;
 struct ListNode {
   int val;
@@ -64,6 +65,33 @@ class Solution {
     return nullptr;
   }
 
+  ListNode* getIntersectionNodeVersion2(ListNode* headA, ListNode* headB) {
+    ListNode *indexA, *indexB;
+    indexA = headA;
+    indexB = headB;
+    bool flagA = 0, flagB = 0;
+    while (indexA && indexB) {
+      if (indexA == indexB) {
+        return indexA;
+      }
+      if (indexA->next == nullptr && (!flagA)) {
+        indexA = headB;
+        indexB = indexB->next;
+        flagA = 1;
+        continue;
+      }
+      if (indexB->next == nullptr && (!flagB)) {
+        indexB = headA;
+        indexA = indexA->next;
+        flagB = 1;
+        continue;
+      }
+      indexA = indexA->next;
+      indexB = indexB->next;
+    }
+    return nullptr;
+  }
+
   /**
    * @brief 反转链表
    *
@@ -93,13 +121,72 @@ class Solution {
     }
     return tail;
   }
+
+  /**
+   * @brief 回文链表
+   * 1 2 3 4 5 6 7 8 9
+   * t t t t t
+   * p   p   p   p   p
+   * @param head
+   * @return true
+   * @return false
+   */
+  bool isPalindrome(ListNode* head) {
+    // 找到中间节点 开始节点加到栈中 中间节点后 弹栈比较大小
+    stack<int> s;
+    ListNode* tail = head;
+    ListNode* prev = head;
+    while (tail && prev) {
+      if (prev->next != nullptr) {
+        prev = prev->next->next;
+      } else {
+        break;
+      }
+
+      s.push(tail->val);
+      tail = tail->next;
+    }
+
+    // 上面要么是prev为nullptr 要么prev->next 为nullptr
+    if (prev) {
+      tail = tail->next;
+    }
+
+    while (tail) {
+      int temp = s.top();
+      if (temp != tail->val) {
+        return false;
+      }
+      tail = tail->next;
+      s.pop();
+    }
+    return true;
+  }
+
+  bool hasCycle(ListNode* head) {
+    ListNode* tail = head;
+    ListNode* prev = head;
+    while (tail && prev) {
+      if (prev->next != nullptr) {
+        prev = prev->next->next;
+      } else {
+        break;
+      }
+      tail = tail->next;
+
+      if (tail == prev) {
+        return true;
+      }
+    }
+    return false;
+  }
 };
 
 int main(int argc, char const* argv[]) {
   ListNode* node1 = new ListNode(1);
   ListNode* node2 = new ListNode(2);
-  ListNode* node3 = new ListNode(3);
-  ListNode* node4 = new ListNode(4);
+  ListNode* node3 = new ListNode(2);
+  ListNode* node4 = new ListNode(1);
   ListNode* node5 = new ListNode(5);
   node1->next = node2;
   node2->next = node3;
@@ -107,7 +194,7 @@ int main(int argc, char const* argv[]) {
   node4->next = node5;
 
   Solution solution;
-  ListNode* result = solution.reverseList(node1);
+  bool result = solution.isPalindrome(node1);
 
   return 0;
 }

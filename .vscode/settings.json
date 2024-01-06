@@ -85,7 +85,8 @@
     "future": "cpp",
     "time.h": "c",
     "version": "cpp",
-    "wrap.h": "c"
+    "wrap.h": "c",
+    "event.h": "c"
   },
   // 这样配置是关键 使用到c++11的语法 -fno-elide-constructors 加上这个关闭RVC优化
   "code-runner.executorMap": {
