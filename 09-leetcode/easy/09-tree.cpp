@@ -43,4 +43,20 @@ class Solution {
     // 任意一条路径满足即可
     return hasPathSum(root->left, targetSum - root->val) || hasPathSum(root->right, targetSum - root->val);
   }
+  /**
+   * @brief 反转二叉树
+   *
+   * @param root
+   * @return TreeNode*
+   */
+  TreeNode* invertTree(TreeNode* root) {
+    if (root == nullptr) {
+      return;
+    }
+    TreeNode* left = invertTree(root->left);
+    TreeNode* right = invertTree(root->right);
+    root->left = right;
+    root->right = left;
+    return root;
+  }
 };

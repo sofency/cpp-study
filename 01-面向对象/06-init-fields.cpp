@@ -1,56 +1,37 @@
 #include <iostream>
 using namespace std;
 // 初始化列表的形式对参数进行初始话操作
-class Phone
-{
-public:
+class Phone {
+ public:
   string type;
-  Phone(string type)
-  {
+  Phone(string type) {
     // 当行参变量和属性名一样时可以使用this进行区分
     this->type = type;
     cout << "Phone 构造" << endl;
   }
-  ~Phone()
-  {
-    cout << "Phone析构" << endl;
-  }
+  ~Phone() { cout << "Phone析构" << endl; }
 };
-class Student
-{
-public:
+class Student {
+ public:
   string name;
   int height;
   Phone phone;
   static int score;
-  static void func()
-  {
-    cout << "静态方法 在这里面只能操作静态的属性,其他的属性是属于对象私有的" << endl;
-  }
+  static void func() { cout << "静态方法 在这里面只能操作静态的属性,其他的属性是属于对象私有的" << endl; }
 
   // 身高加 返回*this 并且用引用&来接收 这样操作的还是本身
-  Student &add_height(int size)
-  {
+  Student& add_height(int size) {
     this->height += size;
     // 就是指向本体
     return *this;
   }
 
   // 初始化列表的方式进行参数的初始化操作
-  Student() : name("init"), height(0), phone("huaawei")
-  {
-    cout << "student init 构造" << endl;
-  };
+  Student() : name("init"), height(0), phone("huaawei") { cout << "student init 构造" << endl; };
 
-  Student(string na, int he, string pho) : name(na), height(he), phone(pho)
-  {
-    cout << "student object 构造" << endl;
-  };
+  Student(string na, int he, string pho) : name(na), height(he), phone(pho) { cout << "student object 构造" << endl; };
 
-  ~Student()
-  {
-    cout << "student 析构" << endl;
-  }
+  ~Student() { cout << "student 析构" << endl; }
 };
 
 // 对象内部定义的静态变量 必须在外部进行初始化操作
@@ -59,8 +40,7 @@ public:
 // c++的静态方法 和和java中的一样
 int Student::score = 100;
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const* argv[]) {
   Student studentA("alice", 198, "apple");
   cout << "name:" << studentA.name << ",height:" << studentA.height << endl;
 

@@ -183,8 +183,110 @@ class Solution {
       return depth;
     }
   }
+
+  vector<vector<int>> levelOrder(TreeNode* root) {
+    if (root == nullptr) {
+      return {};
+    }
+    queue<TreeNode*> list;
+    list.push(root);
+    vector<vector<int>> result;
+
+    while (!list.empty()) {
+      // 全部弹出 并添加下一层节点信息
+      int size = list.size();
+      vector<int> temp;
+      for (int i = 0; i < size; i++) {
+        TreeNode* node = list.front();
+        temp.push_back(node->val);
+        if (node->left != nullptr) {
+          list.push(node->left);
+        }
+        if (node->right != nullptr) {
+          list.push(node->right);
+        }
+        list.pop();
+      }
+      result.push_back(*temp.end());
+    }
+    return result;
+  }
+
+  /**
+   * @brief 是否是有效的二叉搜索树
+   * 中序遍历为顺序的
+   *
+   * @param root
+   * @return true
+   * @return false
+   */
+  bool isValidBST(TreeNode* root) {
+    if (root == nullptr) {
+      return true;
+    }
+    vector<int> result;
+    middle(root, result);
+    TreeNode node = *result.begin();
+    for (auto begin = result.begin() + 1; begin != result.end(); begin++) {
+      TreeNode temp = *begin;
+      if (temp.val <= node.val) {
+        return false;
+      } else {
+        node = *begin;
+      }
+    }
+    return true;
+  }
+
+  void middle(TreeNode* root, vector<int>& result) {
+    if (root == nullptr) {
+      return;
+    }
+    middle(root->left, result);
+    result.push_back(root->val);
+    middle(root->right, result);
+  }
+
+  /**
+   * @brief 第k小
+   *
+   * @param root
+   * @param k
+   * @return int
+   */
+  int kthSmallest(TreeNode* root, int k) {
+    if (root == nullptr && k > 0) {
+      return -1;
+    }
+    vector<int> result;
+    middleK(root, result, k);
+
+    return result[result.size() - 1];
+  }
+
+  void middleK(TreeNode* root, vector<int>& result, int k) {
+    if (root == nullptr) {
+      return;
+    }
+    middleK(root->left, result, k);
+    result.push_back(root->val);
+
+    middleK(root->right, result, k);
+  }
 };
 
 int main(int argc, char const* argv[]) {
+  TreeNode* root = new TreeNode(3);
+  TreeNode* left = new TreeNode(1);
+  TreeNode* right = new TreeNode(4);
+  TreeNode* left_right = new TreeNode(2);
+
+  root->left = left;
+  root->right = right;
+  left->right = left_right;
+
+  Solution solution;
+  solution.kthSmallest(root, 1);
+
   return 0;
 }

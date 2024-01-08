@@ -19,6 +19,71 @@ void sys_err(int flag, const char* message) {
   }
 }
 
+void system_err(int flag, int cfd, const char* message) {
+  if (flag) {
+    send_error(cfd, 404, "system error", message);
+  }
+}
+
+void send_error(int cfd, int status, char* title, char* text) {
+  char buf[4096] = {0};
+
+  // send protocol
+  sprintf(buf, "HTTP/1.1 %d %s\r\n", status, title);
+  sprintf(buf + strlen(buf), "Content-Type: %s\r\n", "text/html");
+  sprintf(buf + strlen(buf), "Content-Length:%d\r\n", -1);
+  sprintf(buf + strlen(buf), "Connection: close\r\n");
+  send(cfd, buf, strlen(buf), 0);
+  send(cfd, "\r\n", 2, 0);  // 发送最后的一行
+
+  // send error html
+  sprintf(buf, "<html><head><title>%d %s</title></head>\n", status, title);
+  sprintf(buf + strlen(buf), "<body bgcolor=\"#cc99cc\"><h2 align=\"center\">%d %s</h4>\n", status, title);
+  sprintf(buf + strlen(buf), "%s\n", text);
+  sprintf(buf + strlen(buf), "<hr>\n</body>\n</html>\n");
+  send(cfd, buf, strlen(buf), 0);
+
+  return;
+}
+
+char* get_file_content_type(char* name) {
+  char* dot = strrchr(name, '.');  // 自右向左查找‘.’字符, 如不存在返回NULL
+  if (dot == NULL)
+    return "text/plain; charset=utf-8";
+  if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0)
+    return "text/html; charset=utf-8";
+  if (strcmp(dot, ".jpg") == 0 || strcmp(dot, ".jpeg") == 0)
+    return "image/jpeg";
+  if (strcmp(dot, ".gif") == 0)
+    return "image/gif";
+  if (strcmp(dot, ".png") == 0)
+    return "image/png";
+  if (strcmp(dot, ".css") == 0)
+    return "text/css";
+  if (strcmp(dot, ".au") == 0)
+    return "audio/basic";
+  if (strcmp(dot, ".wav") == 0)
+    return "audio/wav";
+  if (strcmp(dot, ".avi") == 0)
+    return "video/x-msvideo";
+  if (strcmp(dot, ".mov") == 0 || strcmp(dot, ".qt") == 0)
+    return "video/quicktime";
+  if (strcmp(dot, ".mpeg") == 0 || strcmp(dot, ".mpe") == 0)
+    return "video/mpeg";
+  if (strcmp(dot, ".vrml") == 0 || strcmp(dot, ".wrl") == 0)
+    return "model/vrml";
+  if (strcmp(dot, ".midi") == 0 || strcmp(dot, ".mid") == 0)
+    return "audio/midi";
+  if (strcmp(dot, ".mp3") == 0)
+    return "audio/mpeg";
+  if (strcmp(dot, ".ogg") == 0)
+    return "application/ogg";
+  if (strcmp(dot, ".pac") == 0)
+    return "application/x-ns-proxy-autoconfig";
+
+  return "text/plain; charset=utf-8";
+}
+
 /*获取一行 \r\n 结尾的数据*/
 int get_line(int cfd, char* buf, int size) {
   int i = 0;
@@ -112,39 +177,46 @@ void send_file(int cfd, const char* file) {
   char buf[4096] = {0};
 
   /*打开的服务器本地文件。  --- cfd 能访问客户端的 socket*/
-  int fd = open(file, O_RDONLY);
-  sys_err(fd == -1, "open error");
-
-  while ((n = read(fd, buf, sizeof(buf))) > 0) {
-    ret = send(cfd, buf, n, 0);
-    if (ret == -1) {
-      printf("errno = %d\n", errno);
-      if (errno == EAGAIN || errno == EINTR) {
-        printf("errno %s\n", errno == EAGAIN ? "EAGAIN" : "EINTR");
-        continue;
-      } else {
-        sys_err(1, "send error");
-      }
+  do {
+    int fd = open(file, O_RDONLY);
+    if (fd == -1) {
+      system_err(1, cfd, "file not found");
+      break;
     }
 
-    if (ret < 4096)
-      printf("-----send ret: %d\n", ret);
-  }
+    while ((n = read(fd, buf, sizeof(buf))) > 0) {
+      ret = send(cfd, buf, n, 0);
+      if (ret == -1) {
+        printf("errno = %d\n", errno);
+        if (errno == EAGAIN || errno == EINTR) {
+          printf("errno %s\n", errno == EAGAIN ? "EAGAIN" : "EINTR");
+          continue;
+        } else {
+          system_err(1, cfd, "read file error");
+          break;
+        }
+      }
 
-  close(fd);
+      if (ret < 4096)
+        printf("-----send ret: %d\n", ret);
+    }
+    close(fd);
+  } while (0);
 }
 
 void handle_request(int sockfd, char* file) {
   struct stat file_state;
   int ret = stat(file, &file_state);
-  sys_err(ret == -1, "error");
+  if (ret == -1) {
+    send_error(sockfd, 404, "request error", "file not exit")
+  }
   if (S_ISREG(file_state.st_mode)) {
     /*回发http协议*/
-    // send_respond(sockfd, 200, "OK", "Content-Type: text/plain; charset=iso-8859-1", file_state.st_size);
-    // send_respond(cfd, 200, "OK", "audio/mpeg", -1); 发视频 存在问题
-    send_respond(sockfd, 200, "OK", "Content-Type:image/jpeg", -1);
-
+    /* send_respond(sockfd, 200, "OK", "Content-Type: text/plain; charset=iso-8859-1", file_state.st_size); */
+    send_respond(sockfd, 200, "OK", get_file_content_type(file), -1);
     send_file(sockfd, file);
+  } else {
+    send_error(sockfd, 404, "request error", "file not exit")
   }
 }
 
