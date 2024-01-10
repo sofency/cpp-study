@@ -1,4 +1,0 @@
-/Users/sofency/vscode/cpp_learn/12-cmake/calc/build/CMakeFiles/calc.dir
-/Users/sofency/vscode/cpp_learn/12-cmake/calc/build/CMakeFiles/app.dir
-/Users/sofency/vscode/cpp_learn/12-cmake/calc/build/CMakeFiles/edit_cache.dir
-/Users/sofency/vscode/cpp_learn/12-cmake/calc/build/CMakeFiles/rebuild_cache.dir
