@@ -2,26 +2,20 @@
 using namespace std;
 #include "swap.cpp"
 
-void reverse_array(int *array, int length)
-{
-  for (int i = 0; i < length / 2; i++)
-  {
+void reverse_array(int* array, int length) {
+  for (int i = 0; i < length / 2; i++) {
     int temp = array[length - i - 1];
     array[length - i - 1] = array[i];
     array[i] = temp;
   }
 }
 // 降序
-void bubbling_sort_prev(int *array, int length)
-{
-  for (int i = 0; i < length; i++)
-  {
+void bubbling_sort_prev(int* array, int length) {
+  for (int i = 0; i < length; i++) {
     int temp = array[i];
     int index = i;
-    for (int j = i; j < length; j++)
-    {
-      if (array[j] > temp)
-      {
+    for (int j = i; j < length; j++) {
+      if (array[j] > temp) {
         temp = array[j];
         index = j;
       }
@@ -38,16 +32,12 @@ void bubbling_sort_prev(int *array, int length)
 // 2. 从0开始 依次将当前值与第一步定义的值进行比较 大于则替换最大值，并记住索引
 // 3. 交换 默认最大值与找到的最大值
 // 4. 并默认 最后第二个为最大值 依次
-void bubbling_sort_tail(int *array, int length)
-{
-  for (int i = 0; i < length; i++)
-  {
+void bubbling_sort_tail(int* array, int length) {
+  for (int i = 0; i < length; i++) {
     int temp = array[length - i - 1];
     int index = length - i - 1;
-    for (int j = 0; j < length - i; j++)
-    {
-      if (array[j] > temp)
-      {
+    for (int j = 0; j < length - i; j++) {
+      if (array[j] > temp) {
         temp = array[j];
         index = j;
       }
@@ -59,15 +49,11 @@ void bubbling_sort_tail(int *array, int length)
   }
 }
 
-void bubbling_sort(int *array, int length)
-{
-  for (int i = 0; i < length - 1; i++)
-  {
+void bubbling_sort(int* array, int length) {
+  for (int i = 0; i < length - 1; i++) {
     bool flag = false;
-    for (int j = 1; j < length - i; j++)
-    {
-      if (array[j - 1] > array[j])
-      {
+    for (int j = 1; j < length - i; j++) {
+      if (array[j - 1] > array[j]) {
         int temp = array[j];
         array[j] = array[j - 1];
         array[j - 1] = temp;
@@ -81,8 +67,7 @@ void bubbling_sort(int *array, int length)
 }
 
 // 数组的定义
-int define_array()
-{
+int define_array() {
   // int array[5]; 未初始化 直接定义 默认为0
   // int array[5] = {1, 2, 4, 5, 6}; 赋值操作
   // 这样不指定数组长度
@@ -106,13 +91,11 @@ int define_array()
 // 提前声明
 int max(int a, int b);
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const* argv[]) {
   cout << "数组长度:" << define_array() << endl;
   int num[] = {5, 2, 1, 4, 9, 3, 7, 5, 1};
   bubbling_sort(num, sizeof(num) / sizeof(int));
-  for (int i = 0; i < sizeof(num) / sizeof(int); i++)
-  {
+  for (int i = 0; i < sizeof(num) / sizeof(int); i++) {
     cout << num[i] << " ";
   }
   cout << endl;
@@ -128,14 +111,13 @@ int main(int argc, char const *argv[])
   cout << "b=" << b << endl;
 
   // 但是如果要赋值新的位置 会报错 因为系统0-255是系统占用的 不允许访问
-  int *p = NULL;
+  int* p = NULL;
   // 野指针 这块地址也不是你申请的 当你要访问 就会报错
   // int *x = (int*)0x9898;
 
   return 0;
 }
 
-int max(int a, int b)
-{
+int max(int a, int b) {
   return a > b ? a : b;
 }

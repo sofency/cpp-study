@@ -1,13 +1,11 @@
 #include <iostream>
 using namespace std;
 
-class Animal
-{
-public:
+class Animal {
+ public:
   virtual void eat() = 0;
   virtual void study() = 0;
-  virtual void action()
-  {
+  virtual void action() {
     eat();
     study();
   }
@@ -22,33 +20,20 @@ public:
   virtual ~Animal() = 0;
 };
 
-Animal::~Animal()
-{
+Animal::~Animal() {
   cout << "父类析构" << endl;
 }
-class Dog : public Animal
-{
-public:
-  virtual void eat()
-  {
-    cout << "吃鸡腿" << endl;
-  }
+class Dog : public Animal {
+ public:
+  virtual void eat() { cout << "吃鸡腿" << endl; }
 
-  virtual void study()
-  {
-    cout << "学习深蹲" << endl;
-  }
+  virtual void study() { cout << "学习深蹲" << endl; }
 
-  ~Dog()
-  {
-    cout << "子类的析构" << endl;
-  }
+  ~Dog() { cout << "子类的析构" << endl; }
 };
 
-int main(int argc, char const *argv[])
-{
-
-  Animal *animal = new Dog;
+int main(int argc, char const* argv[]) {
+  Animal* animal = new Dog;
   animal->action();
 
   // 父类不写虚析构的话 是无法执行 子类的析构函数的

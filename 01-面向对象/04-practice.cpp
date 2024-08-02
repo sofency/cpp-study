@@ -1,12 +1,10 @@
 #include "circle.cpp"
 
-void test()
-{
+void test() {
   // 局部变量中 存储在栈区 这样可以观察到即执行构造函数也执行了析构函数
   Circle circle;
 }
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const* argv[]) {
   test();
   Circle circle;
   circle.set_length(5);

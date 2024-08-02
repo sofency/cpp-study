@@ -2,25 +2,17 @@
 using namespace std;
 
 // 菱形继承
-class Animal
-{
-public:
+class Animal {
+ public:
   int age;
 };
 
-class Sheep : virtual public Animal
-{
-};
-class Tuo : virtual public Animal
-{
-};
+class Sheep : virtual public Animal {};
+class Tuo : virtual public Animal {};
 
-class SheepTuo : public Sheep, public Tuo
-{
-};
+class SheepTuo : public Sheep, public Tuo {};
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const* argv[]) {
   SheepTuo sheep;
   // sheep.age; 如果不在Sheep 和Tuo上使用虚继承 则age 会在 Sheep 和Tuo中各保存一份 进而导致子类不知道 该age该使用谁的
   sheep.Sheep::age = 18;

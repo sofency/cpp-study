@@ -18,8 +18,7 @@ using namespace std;
 // 比较运算符 == !=  > < >= <=
 // 逻辑运算符 !(非) && (与) || (或)
 
-void type_size()
-{
+void type_size() {
   cout << "int:" << sizeof(int) << endl;
   cout << "long:" << sizeof(long) << endl;
 
@@ -37,16 +36,14 @@ void type_size()
 }
 
 // 科学计数法
-void science_show()
-{
+void science_show() {
   // 科学计数法 3 * 10 ^ 3
   float number = 3e3;
   cout << number << endl;
 }
 
 // 常见的转义字符
-void change_character()
-{
+void change_character() {
   cout << "\\n 换行" << endl;
   cout << "\\t 水平制表符" << endl;
 
@@ -60,8 +57,7 @@ void change_character()
 }
 
 // 数据的输入
-void input()
-{
+void input() {
   // bool 非0都是真
   int number;
   cout << "请输入整型" << endl;
@@ -76,80 +72,66 @@ void input()
 
 // 选择结构
 // if(){}else if() {} else{}
-void choose()
-{
+void choose() {
   int score;
   cout << "请输入分数" << endl;
   cin >> score;
 
   // switch语法
-  switch (score)
-  {
-  case 600 ... 700:
-    cout << "985录取" << endl;
-    break;
-  case 550 ... 599:
-    cout << "录取211" << endl;
-    break;
-  default:
-    cout << "再来一年" << endl;
-    break;
+  switch (score) {
+    case 600 ... 700:
+      cout << "985录取" << endl;
+      break;
+    case 550 ... 599:
+      cout << "录取211" << endl;
+      break;
+    default:
+      cout << "再来一年" << endl;
+      break;
   }
 }
 // 循环条件
-void circulate()
-{
+void circulate() {
   // while(expression) {}
   // for () {}
-  for (int i = 0; i < 3; i++)
-  {
+  for (int i = 0; i < 3; i++) {
     cout << "current:" << i << endl;
   }
 }
 
 // 练习题
-void practice(int first, int second, int third)
-{
+void practice(int first, int second, int third) {
   int result = first > second ? (first > third ? first : second) : (second > third ? second : third);
   cout << "最大值为: " << result << endl;
 }
 
 // 猜数字
-void guess()
-{
+void guess() {
   // 设置随机数种子
   // 版本低需要 include<ctime>
   // do {}while(expression)
   srand((unsigned int)time(NULL));
   int number = rand() % 100;
   int guess_number;
-  while (true)
-  {
+  while (true) {
     cout << "请输入你猜的数字" << endl;
     cin >> guess_number;
-    if (guess_number > number)
-    {
+    if (guess_number > number) {
       cout << "你猜的数字大了" << endl;
-    }
-    else if (guess_number < number)
-    {
+    } else if (guess_number < number) {
       cout << "你猜的数字小了" << endl;
-    }
-    else
-    {
+    } else {
       cout << "恭喜你猜对了" << endl;
       break;
     }
   }
 }
 
-int flower_number(int number)
-{
+int flower_number(int number) {
   // 赋值给它 是值传递 不是引用传递
   int origin = number;
   int sum = 0;
-  while (origin != 0)
-  {
+  while (origin != 0) {
     int temp = origin % 10;
     sum += temp * temp * temp;
     origin = origin / 10;
@@ -158,13 +140,10 @@ int flower_number(int number)
 }
 
 // 找到水仙花数
-void find_flower_number()
-{
+void find_flower_number() {
   int start = 100;
-  do
-  {
-    if (flower_number(start) == 1)
-    {
+  do {
+    if (flower_number(start) == 1) {
       cout << start << endl;
     }
     start++;
@@ -172,49 +151,39 @@ void find_flower_number()
 }
 
 // 找出含七 或者7的倍数的数字
-bool detect(int num)
-{
+bool detect(int num) {
   // 能被7整除
   if (num % 7 == 0)
     return true;
   int temp = num;
-  while (temp != 0)
-  {
+  while (temp != 0) {
     int number = temp % 10;
-    if (number == 7)
-    {
+    if (number == 7) {
       return true;
     }
     temp = temp / 10;
   }
   return false;
 }
-void find_seven()
-{
-  for (int i = 1; i < 100; i++)
-  {
-    if (detect(i))
-    {
+void find_seven() {
+  for (int i = 1; i < 100; i++) {
+    if (detect(i)) {
       cout << i << endl;
     }
   }
 }
 // 打印乘法表
 // continue break
-void print_multiple()
-{
-  for (int i = 1; i < 10; i++)
-  {
-    for (int j = 1; j <= i; j++)
-    {
+void print_multiple() {
+  for (int i = 1; i < 10; i++) {
+    for (int j = 1; j <= i; j++) {
       // cout << j << "*" << i << "=" << i * j << "\t" << ends;
       cout << j << "*" << i << "=" << i * j << "\t";
     }
     cout << endl;
   }
 }
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const* argv[]) {
   // 定义变量
   int height = 20;
   // 不可修改

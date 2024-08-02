@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/Main.dir/main.cpp.o CMakeFiles/Main.dir/src/compute.cpp.o -o /Users/sofency/vscode/cpp_learn/12-cmake/study/bin/Main 

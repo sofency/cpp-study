@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    ".s": ".cpp",
     "ostream": "cpp",
     "string": "cpp",
     "iosfwd": "cpp",
@@ -86,7 +87,14 @@
     "time.h": "c",
     "version": "cpp",
     "wrap.h": "c",
-    "event.h": "c"
+    "event.h": "c",
+    "unordered_set": "cpp",
+    "charconv": "cpp",
+    "execution": "cpp",
+    "span": "cpp",
+    "*.tcc": "cpp",
+    "format": "cpp",
+    "text_encoding": "cpp"
   },
   // 这样配置是关键 使用到c++11的语法 -fno-elide-constructors 加上这个关闭RVC优化
   "code-runner.executorMap": {
